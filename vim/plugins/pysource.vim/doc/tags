@@ -1,0 +1,11 @@
+<leader>sfs	pysource.txt	/*<leader>sfs*
+<leader>sft	pysource.txt	/*<leader>sft*
+<leader>sfv	pysource.txt	/*<leader>sfv*
+pysource-contents	pysource.txt	/*pysource-contents*
+pysource-contributing	pysource.txt	/*pysource-contributing*
+pysource-functions	pysource.txt	/*pysource-functions*
+pysource-introduction	pysource.txt	/*pysource-introduction*
+pysource-mappings	pysource.txt	/*pysource-mappings*
+pysource-thanks	pysource.txt	/*pysource-thanks*
+pysource.txt	pysource.txt	/*pysource.txt*
+python#Source()	pysource.txt	/*python#Source()*

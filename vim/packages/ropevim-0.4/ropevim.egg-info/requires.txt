@@ -1,0 +1,2 @@
+rope >= 0.9.4
+ropemode >= 0.2

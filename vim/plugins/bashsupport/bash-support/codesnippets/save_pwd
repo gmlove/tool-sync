@@ -1,0 +1,12 @@
+oldpwd=`pwd`
+this_file=$0
+if [[ -h $0 ]];then
+        this_file=`ls -l $0|awk -F"->" '{print $2}'`
+fi
+ws=`dirname $this_file`
+cd $ws
+ws=`pwd`
+
+
+cd $oldpwd
+exit 0
