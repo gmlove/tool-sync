@@ -52,6 +52,13 @@ pyflake_init ()
 
 function ropevim_init ()
 {
+        if pip help 1>/dev/null 2>&1; then
+            :
+        else
+            curl http://python-distribute.org/distribute_setup.py | sudo python
+            curl https://raw.github.com/pypa/pip/master/contrib/get-pip.py |sudo python
+        fi
+
         local ws1=`pwd`
         cd $ws/packages/ropevim-0.4/
         sudo python setup.py install
@@ -61,17 +68,19 @@ function ropevim_init ()
 function download_plugin
 {
         cd plugins
-        local git_plugins=( delimitMate syntastic vcscommand pyflakes-vim supertab pysource cocoa.vim xmledit )
+        local git_plugins=( delimitMate syntastic vcscommand pyflakes-vim supertab pysource.vim cocoa.vim xmledit )
         local git_repos=( https://github.com/Raimondi/delimitMate.git https://github.com/scrooloose/syntastic.git git://repo.or.cz/vcscommand.git git://github.com/kevinw/pyflakes-vim.git https://github.com/ervandew/supertab.git https://github.com/cwood/pysource.vim.git git://github.com/msanders/cocoa.vim.git https://github.com/sukima/xmledit.git )
         local i=0
         while [[ $i -lt ${#git_plugins[@]} ]]
         do
                 local p=${git_repos[$i]}
-                i=$(( $i + 1 ))
-                if [[ `ls ${git_plugins[$i]} 2>/dev/null | wc -l` != "0" ]]; then
+                if [[ `ls ${git_plugins[$i]} 2>/dev/null | wc -l` == "0" ]]; then
+                        #echo "ls ${git_plugins[$i]} 2>/dev/null | wc -l"
+                        #ls ${git_plugins[$i]} 2>/dev/null | wc -l
                         echo "git clone $p"
                         git clone $p
                 fi   
+                i=$(( $i + 1 ))
         done
         cd ..
 }
