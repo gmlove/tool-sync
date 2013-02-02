@@ -1,4 +1,5 @@
-import re
+import re, urllib, simplejson, time
+from setting.setting import logger
 
 
 def PrintObjectProperties(object, spacing=25):  
@@ -36,6 +37,45 @@ def VarNameConvert(name):
                         else:
                                 ret += w[0].upper() + w[1:].lower()
                 return ret
+
+class Net(object):
+    @staticmethod
+    def read_url(url):
+        count = 5
+        wait = 5
+        retry = 0
+        ex = None
+        while retry < count:
+            try:
+                res = urllib.urlopen(url).read()
+                return res
+            except Exception as e:
+                logger.warn("request for url: %s, failed."%url)
+                retry = retry + 1
+                time.sleep(wait)
+                ex = e
+        raise ex
+                
+            
+    @staticmethod
+    def read_json(url, func = None):
+        count = 5
+        retry = 0
+        ex = None
+        urlresponse = None
+        while retry < count:
+            try:
+                urlresponse = Net.read_url(url)
+                if func != None:
+                    urlresponse = func(urlresponse)
+                res = simplejson.loads(urlresponse)
+                return res
+            except Exception as e:
+                logger.warn("parse json for url: %s, failed. jsonstr: %s."%(url, urlresponse))
+                retry = retry + 1
+                ex = e
+        raise ex
+
 
 
 if __name__ == "__main__":

@@ -44,6 +44,7 @@ pyflake_init ()
 {
         cd plugins/pyflakes-vim
         sudo apt-get install pyflakes
+        sudo pip install pyflakes
         git submodule init
         git submodule update
         cd ../../

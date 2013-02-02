@@ -1,20 +1,65 @@
 import MySQLdb
+from setting.setting import conf, logger
+from util.ThreadLocal import ThreadLocal
 
-_connections = {}
-conn = None
+log = logger
+connections = None
 
-def configdb(host, user, password, db, port = 3306):
-        global conn
-        conn = _get_connection(host, user, password, db, port)
+def _create_connection(host, user, password, db, port = 3306):
+    conn = MySQLdb.connect(host, user, password, db, port)
+    conn.set_character_set('utf8')
+    return conn
 
-def _get_connection(host, user, password, db, port):
-        key = host + "@" + db
-        conn = None
-        if key in _connections:
-                conn = _connections[key]
-        else:
-                conn = MySQLdb.connect(host, user, password, db, port = port)
-                conn.set_character_set('utf8')
-                _connections[key] = conn
-        return conn
+def get_connection():
+    def create_connection():
+        return _create_connection(
+                              conf.get('mysql', 'host'), 
+                              conf.get('mysql', 'username'), 
+                              conf.get('mysql', 'password'),
+                              conf.get('mysql', 'db'),
+                              int(conf.get('mysql', 'port'))
+                              )
+    global connections
+    if not connections:
+        connections = ThreadLocal(create_connection)
+    return connections.get()
+
+
+def transaction(func):
+    def wrapped_func(*args, **kwargs):
+        conn = get_connection()
+        try:
+            r = func(*args, **kwargs)
+            conn.commit()
+            return r
+        except Exception as e: 
+            conn.rollback()
+            raise e
+        
+    return wrapped_func
+    
+
+
+
+class Test(object):
+    def __init__(self):
+        pass
+    
+    
+    def new(self, detail, pic):
+
+        return self
+        
+    @staticmethod
+    @transaction
+    def test():
+        conn = get_connection()
+        sql = "select %s"
+        c = conn.cursor();
+        r = c.execute(sql,(1,))
+        print r
+        
+        
+    
+    
 

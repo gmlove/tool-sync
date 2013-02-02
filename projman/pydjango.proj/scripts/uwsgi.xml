@@ -1,0 +1,17 @@
+<uwsgi>
+    <socket>:4031</socket>
+    <!--<socket>/tmp/uwsgi.sock</socket>-->
+    <chdir>../src</chdir>
+    <pythonpath>./{PROJECT_NAME}</pythonpath>
+    <module>wsgi</module>
+    <processes>2</processes>
+    <master>true</master>
+    <pidfile>/var/run/{PROJECT_NAME}-uwsgi.pid</pidfile>
+    <logdate>true</logdate>
+    <daemonize>/var/log/{PROJECT_NAME}/uwsgi.log</daemonize>
+    <harakiri>20</harakiri>
+    <harakiri-verbose/>
+    <memory-report/>
+    <post-buffering>8192</post-buffering>
+    <post-buffering-bufsize>65536</post-buffering-bufsize>
+</uwsgi>
