@@ -21,8 +21,8 @@
 #add debug information to output
 function enable_debug
 {
-        export PS4='+${BASH_SOURCE}:${LINENO}:${FUNCNAME[0]}: '
-        set -x
+    export PS4='+${BASH_SOURCE}:${LINENO}:${FUNCNAME[0]}: '
+    set -x
 }
 
 #save the current pwd, and will recover late.
@@ -40,10 +40,10 @@ src_dir=".."
 proj_name=
 function get_proj_name
 {
-        cd $src_dir
-        proj_name=$(basename `pwd`)        
-        echo "get_pro_name: $proj_name"
-        cd $ws
+    cd $src_dir
+    proj_name=$(basename `pwd`)    
+    echo "get_pro_name: $proj_name"
+    cd $ws
 }
 get_proj_name
 root="deploy"
@@ -67,9 +67,9 @@ install_deps_file="scripts/install_deps.sh"
 function sys_conf 
 {
     local conf_dir="$deproot/config"
-        pemcheck
+    pemcheck
 	ssh $auth $uhost "mkdir -pv $conf_dir"
-        scp $auth ./config/* $uhost:$conf_dir
+    scp $auth ./config/* $uhost:$conf_dir
 	scp $auth install_cloudera.sh $uhost:$deproot
 }
 
@@ -77,22 +77,22 @@ function sys_conf
 #copy online configuration file
 function proj_conf
 {
-        if [[ $mode == "local" ]];then
-                echo "will do local deploy."
-                return 0
-        else
-                echo "will do $mode deploy."
-        fi
-        echo "find $src_dir -name *.$mode | sed 's/\(.*\)\(.$mode\)/\1 \1.local/' | xargs -n 2 cp -fv"
-        find $src_dir -name *.$mode | sed "s/\(.*\)\(.$mode\)/\1 \1.local/" | xargs -n 2 cp -fv
-        echo "find $src_dir -name *.$mode | sed 's/\(.*\)\(.$mode\)/& \1/' | xargs -n 2 cp -fv"
-        find $src_dir -name *.$mode | sed "s/\(.*\)\(.$mode\)/& \1/" | xargs -n 2 cp -fv
+    if [[ $mode == "local" ]];then
+        echo "will do local deploy."
+        return 0
+    else
+        echo "will do $mode deploy."
+    fi
+    echo "find $src_dir -name *.$mode | sed 's/\(.*\)\(.$mode\)/\1 \1.local/' | xargs -n 2 cp -fv"
+    find $src_dir -name *.$mode | sed "s/\(.*\)\(.$mode\)/\1 \1.local/" | xargs -n 2 cp -fv
+    echo "find $src_dir -name *.$mode | sed 's/\(.*\)\(.$mode\)/& \1/' | xargs -n 2 cp -fv"
+    find $src_dir -name *.$mode | sed "s/\(.*\)\(.$mode\)/& \1/" | xargs -n 2 cp -fv
 }
 function prof_deconf
 {
-        if [[ $mode != "local" ]];then
-                find $src_dir -name *.$mode | sed "s/\(.*\)\(.$mode\)/\1.local \1/" | xargs -n 2 cp -fv
-        fi
+    if [[ $mode != "local" ]];then
+        find $src_dir -name *.$mode | sed "s/\(.*\)\(.$mode\)/\1.local \1/" | xargs -n 2 cp -fv
+    fi
 }
 
 
@@ -100,28 +100,28 @@ tarfile=${proj_name}.tar.gz
 #tar the source file.
 function tar_
 {
-        proj_conf
+    proj_conf
 	cd ${src_dir}/../
-        local ex=""
-        for e in $tarexclu; do
-                ex="${ex} --exclude=$proj_name/$e"
-        done
-        echo "tar cvf $ws/$tarfile --exclude=${proj_name}/test --exclude=$proj_name/release $ex --exclude-backups $proj_name/"
-        tar cvf $ws/$tarfile --exclude ${proj_name}/test --exclude $proj_name/release $ex --exclude-backups $proj_name/
-        cd $ws
-        prof_deconf
+    local ex=""
+    for e in $tarexclu; do
+        ex="${ex} --exclude=$proj_name/$e"
+    done
+    echo "tar czvf $ws/$tarfile --exclude=${proj_name}/test --exclude=$proj_name/release $ex --exclude-backups $proj_name/"
+    tar czvf $ws/$tarfile --exclude ${proj_name}/test --exclude $proj_name/release $ex --exclude-backups $proj_name/
+    cd $ws
+    prof_deconf
 }
 
 
 function pemcheck
 {
-        if [[ ${auth:$((${#auth}-${#pemfile})):${#auth}} != $pemfile ]];then echo "no check"; return;
-        fi
-        if [[ ! -f $pemfile ]];then
-                echo "pemfile: $pemfile not exist."
-                exit 0
-        fi
-        chmod 400 $pemfile
+    if [[ ${auth:$((${#auth}-${#pemfile})):${#auth}} != $pemfile ]];then echo "no check"; return;
+    fi
+    if [[ ! -f $pemfile ]];then
+        echo "pemfile: $pemfile not exist."
+        exit 0
+    fi
+    chmod 400 $pemfile
 }
 
 function scp_
@@ -144,9 +144,9 @@ function dep_
     tar_
     scp_
     if [[ $install_deps == "1" ]];then
-        ssh -t $auth $uhost "cd $deproot && tar xvf $tarfile && cd $proj_name && ./$install_deps_file && ./$installfile"
+        ssh -t $auth $uhost "cd $deproot && tar xzvf $tarfile && cd $proj_name && ./$install_deps_file && ./$installfile"
     else
-        ssh -t $auth $uhost "cd $deproot && tar xvf $tarfile && cd $proj_name && ./$installfile"
+        ssh -t $auth $uhost "cd $deproot && tar xzvf $tarfile && cd $proj_name && ./$installfile"
     fi
     echo "done."
 }
@@ -158,7 +158,7 @@ function dep_backup
 {
     pemcheck
 	cd $src_dir
-	tar cvf $ws/backup.tar.gz Backup/
+	tar czvf $ws/backup.tar.gz Backup/
 	cd $ws
 	ssh $auth $uhost "mkdir -p deploy/Backup"
 	scp $auth backup.tar.gz $uhost:deploy/
@@ -189,11 +189,11 @@ if [[ -n $2 ]]; then
 fi
 
 if [[ -n $3 ]]; then
-        auth=$3
+    auth=$3
 fi
 
 if [[ -n $4 ]];then
-        mode=$4
+    mode=$4
 fi
 
 if [[ -n $5 ]];then

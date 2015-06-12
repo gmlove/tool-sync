@@ -1,5 +1,17 @@
 #!/bin/bash
 
+
+oldpwd=`pwd`
+this_file=$0
+if [[ -h $0 ]];then
+    this_file=`ls -l $0|awk -F"->" '{print $2}'`
+fi
+ws=`dirname $this_file`
+cd $ws
+ws=`pwd`
+
+
+
 PROJ_NAME={PROJECT_NAME}
 
 LOGROOT=/var/log/$PROJ_NAME
@@ -13,8 +25,9 @@ fi
 
 echo -----Copy source code to site folder-------
 
+test -d ${INSTALL_PROJ_DIR}_bak && sudo rm -rf ${INSTALL_PROJ_DIR}_bak
 sudo mv -v ${INSTALL_PROJ_DIR} ${INSTALL_PROJ_DIR}_bak
-sudo cp -rf ../../ ${INSTALL_PROJ_DIR}
+sudo cp -rf ../ ${INSTALL_PROJ_DIR}
 
 echo -----ensure log path-------
 if [ ! -d $LOGROOT ]
@@ -24,3 +37,10 @@ then
 	sudo touch $LOGROOT/error.log
 	sudo chmod -R go+w $LOGROOT
 fi
+
+
+test -f $INSTALL_PROJ_DIR/scripts/restart.sh  && sudo $INSTALL_PROJ_DIR/scripts/restart.sh
+
+
+cd $oldpwd
+exit 0

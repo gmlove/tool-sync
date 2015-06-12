@@ -63,3 +63,8 @@ elif [ $1 = 'status' ];then
 else
     echo -e $help_msg
 fi
+
+cd $oldpwd
+exit 0
+
+
