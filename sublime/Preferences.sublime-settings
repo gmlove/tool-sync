@@ -1,0 +1,17 @@
+{
+	"added_words":
+	[
+		"Args",
+		"dict",
+		"denom"
+	],
+	"draw_white_space": "all",
+	"ignored_packages":
+	[
+		"Markdown",
+		"Vintage"
+	],
+	"spell_check": true,
+	"translate_tabs_to_spaces": true,
+	"trim_trailing_white_space_on_save": true
+}

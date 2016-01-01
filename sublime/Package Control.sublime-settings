@@ -1,0 +1,25 @@
+{
+	"bootstrapped": true,
+	"in_process_packages":
+	[
+	],
+	"installed_packages":
+	[
+		"AdvancedNewFile",
+		"All Autocomplete",
+		"AutoDocstring",
+		"AutoFileName",
+		"DocBlockr",
+		"EditorConfig",
+		"Emmet",
+		"Indent XML",
+		"JavaScriptNext - ES6 Syntax",
+		"JsFormat",
+		"JSON Reindent",
+		"MarkdownEditing",
+		"Package Control",
+		"SideBarEnhancements",
+		"SublimeCodeIntel",
+		"SublimeLinter-jshint"
+	]
+}

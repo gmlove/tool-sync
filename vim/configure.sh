@@ -70,7 +70,7 @@ function download_plugin
 {
         cd plugins
         local git_plugins=( delimitMate syntastic vcscommand pyflakes-vim supertab pysource.vim cocoa.vim xmledit )
-        local git_repos=( https://github.com/Raimondi/delimitMate.git https://github.com/scrooloose/syntastic.git git://repo.or.cz/vcscommand.git git://github.com/kevinw/pyflakes-vim.git https://github.com/ervandew/supertab.git https://github.com/cwood/pysource.vim.git git://github.com/msanders/cocoa.vim.git https://github.com/sukima/xmledit.git )
+        local git_repos=( https://github.com/Raimondi/delimitMate.git https://github.com/scrooloose/syntastic.git git://repo.or.cz/vcscommand.git git://github.com/kevinw/pyflakes-vim.git https://github.com/ervandew/supertab.git https://github.com/cwood/pysource.vim.git git://github.com/msanders/cocoa.vim.git https://github.com/sukima/xmledit.git https://github.com/fatih/vim-go.git)
         local i=0
         while [[ $i -lt ${#git_plugins[@]} ]]
         do
